@@ -84,7 +84,11 @@
  * not be initialized if so desired.
  **/
 typedef struct _cairo_cache_entry {
-    unsigned long hash;
+    #ifdef HXCPP_M64 
+	unsigned long long hash; /* 64bit support */
+    #else
+	unsigned long hash;
+    #endif
     unsigned long size;
 } cairo_cache_entry_t;
 
