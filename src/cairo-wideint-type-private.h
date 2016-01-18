@@ -61,7 +61,14 @@
 # ifndef HAVE_UINT64_T
 #  define HAVE_UINT64_T 1
 # endif
-#else
+#elif defined __MINGW32__ /* mingw support */
+# include <stdint.h>
+# include <inttypes.h>
+# include <sys/types.h>
+# ifndef HAVE_UINT64_T
+#  define HAVE_UINT64_T 1
+# endif
+#else /* end mingw support */
 #error Cannot find definitions for fixed-width integral types (uint8_t, uint32_t, etc.)
 #endif
 
