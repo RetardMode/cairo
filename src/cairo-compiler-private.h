@@ -196,6 +196,7 @@
 #endif
 
 #if (defined(__WIN32__) && !defined(__WINE__)) || defined(_MSC_VER)
+#ifndef __MINGW32__
 #define access _access
 #define fdopen _fdopen
 #define hypot _hypot
@@ -205,6 +206,7 @@
 #define strdup _strdup
 #define unlink _unlink
 #define vsnprintf _vsnprintf
+#endif
 #endif
 
 #ifdef _MSC_VER
