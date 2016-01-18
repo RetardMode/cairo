@@ -284,12 +284,17 @@ _cairo_mempool_init (cairo_mempool_t *pool,
 		      void *base, size_t bytes,
 		      int min_bits, int num_sizes)
 {
-    unsigned long tmp;
     int num_blocks;
     int i;
 
     /* Align the start to an integral chunk */
+    #ifdef HXCPP_M64
+    unsigned long long tmp;
+    tmp = ((unsigned long long) base) & ((1 << min_bits) - 1);
+     #else
+    unsigned long tmp;
     tmp = ((unsigned long) base) & ((1 << min_bits) - 1);
+    #endif
     if (tmp) {
 	tmp = (1 << min_bits) - tmp;
 	base = (char *)base + tmp;
