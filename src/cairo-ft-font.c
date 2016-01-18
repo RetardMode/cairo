@@ -69,7 +69,11 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #else
+#ifndef __MINGW32__ /* mingw support */
 #define access(p, m) 0
+#else
+#include <unistd.h>	
+#endif /* end mingw support */
 #endif
 
 /* Fontconfig version older than 2.6 didn't have these options */
@@ -373,7 +377,11 @@ _cairo_ft_unscaled_font_init_key (cairo_ft_unscaled_font_t *key,
 				  int			    id,
 				  FT_Face		    face)
 {
-    unsigned long hash;
+    #ifdef HXCPP_M64
+    unsigned long long hash;
+    #else
+     unsigned long hash;
+    #endif
 
     key->from_face = from_face;
     key->filename = filename;
@@ -382,8 +390,13 @@ _cairo_ft_unscaled_font_init_key (cairo_ft_unscaled_font_t *key,
 
     hash = _cairo_hash_string (filename);
     /* the constants are just arbitrary primes */
+    #ifdef HXCPP_M64 /*64 bit support */
+    hash += ((unsigned long long) id) * 1607;
+    hash += ((unsigned long long) face) * 2137;
+    #else
     hash += ((unsigned long) id) * 1607;
     hash += ((unsigned long) face) * 2137;
+    #endif
 
     key->base.hash_entry.hash = hash;
 }
